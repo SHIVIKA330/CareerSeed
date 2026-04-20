@@ -5,15 +5,14 @@ import streamlit as st
 from openai import OpenAI
 import os
 
-# Initialize Client for AI Enhancement (Ollama replacement)
-# This will be configured via app.py or secrets
+# Initialize Client for AI Enhancement
 def run_ai_enhancer(resume_text, client):
     """Uses AIML API (OpenAI compatible) to enhance resume text for ATS."""
     prompt = f"Enhance the following resume text for ATS optimization. Provide clear sections, improve action verbs, and ensure impact-driven bullet points. Maintain the original information but make it professional.\n\nRESUME TEXT:\n{resume_text}"
     
     try:
         response = client.chat.completions.create(
-            model="gpt-4o", # Scalable model
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": "You are an expert career coach and ATS optimization specialist."},
                 {"role": "user", "content": prompt}
@@ -34,7 +33,6 @@ def extract_text_from_pdf(pdf_file):
     except Exception as e:
         return f"Extraction Error: {str(e)}"
 
-def get_relevant_courses(skills_found):
 def extract_skills(resume_text, client):
     """Uses AI to extract key skills from the resume."""
     prompt = f"Extract a comma-separated list of the top 5-8 technical skills from this resume. Provide ONLY the skills, no other text.\n\nRESUME:\n{resume_text}"
@@ -90,3 +88,4 @@ def calculate_ats_score(resume_text):
         if word in resume_text.lower():
             score += 10
     return min(score + 20, 100) # Base score + matches
+
